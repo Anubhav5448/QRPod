@@ -71,7 +71,7 @@ export class SuperAdminAuthService {
     res.cookie('superadmin_access_token', accessToken, {
       httpOnly: true,
       secure: isProd,
-      sameSite: 'strict',
+      sameSite: isProd ? 'none' : 'lax',
       maxAge: 30 * 60 * 1000,
       path: '/',
     });
@@ -79,7 +79,7 @@ export class SuperAdminAuthService {
     res.cookie('superadmin_refresh_token', refreshToken, {
       httpOnly: true,
       secure: isProd,
-      sameSite: 'strict',
+      sameSite: isProd ? 'none' : 'lax',
       maxAge: 7 * 24 * 60 * 60 * 1000,
       path: '/superadmin/auth/refresh',
     });
@@ -136,7 +136,7 @@ export class SuperAdminAuthService {
       res.cookie('superadmin_access_token', accessToken, {
         httpOnly: true,
         secure: isProd,
-        sameSite: 'strict',
+        sameSite: isProd ? 'none' : 'lax',
         maxAge: 30 * 60 * 1000,
         path: '/',
       });

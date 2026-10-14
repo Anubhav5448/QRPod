@@ -109,7 +109,7 @@ export class RestaurantAuthService {
     res.cookie('restaurant_access_token', accessToken, {
       httpOnly: true,
       secure: isProd,
-      sameSite: 'strict',
+      sameSite: isProd ? 'none' : 'lax',
       maxAge: 30 * 60 * 1000,
       path: '/',
     });
@@ -117,7 +117,7 @@ export class RestaurantAuthService {
     res.cookie('restaurant_refresh_token', refreshToken, {
       httpOnly: true,
       secure: isProd,
-      sameSite: 'strict',
+      sameSite: isProd ? 'none' : 'lax',
       maxAge: 7 * 24 * 60 * 60 * 1000,
       path: '/auth/refresh',
     });
@@ -193,7 +193,7 @@ export class RestaurantAuthService {
       res.cookie('restaurant_access_token', accessToken, {
         httpOnly: true,
         secure: isProd,
-        sameSite: 'strict',
+        sameSite: isProd ? 'none' : 'lax',
         maxAge: 30 * 60 * 1000,
         path: '/',
       });

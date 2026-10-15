@@ -2,10 +2,14 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { LogOut } from 'lucide-react';
+import { LogOut, Menu } from 'lucide-react';
 import { api } from '@/lib/api';
 
-export function TopBar() {
+interface Props {
+  onMenuClick?: () => void;
+}
+
+export function TopBar({ onMenuClick }: Props) {
   const router = useRouter();
   const [email, setEmail] = useState('');
 
@@ -26,15 +30,33 @@ export function TopBar() {
   };
 
   return (
-    <header className="h-16 bg-white border-b border-neutral-200 flex items-center justify-end px-6 gap-4">
-      <span className="text-sm text-neutral-600">{email}</span>
+    <header className="h-16 bg-white border-b border-neutral-200 flex items-center px-4 lg:px-6 gap-3 shrink-0">
+      {/* Hamburger — only on mobile */}
       <button
-        onClick={handleLogout}
-        className="flex items-center gap-1.5 text-sm text-neutral-700 hover:text-neutral-900 transition"
+        onClick={onMenuClick}
+        className="lg:hidden p-2 -ml-2 rounded-lg text-neutral-600 hover:text-neutral-900 hover:bg-neutral-100 transition"
+        aria-label="Open navigation menu"
       >
-        <LogOut className="w-4 h-4" />
-        Sign out
+        <Menu className="w-5 h-5" />
       </button>
+
+      {/* Spacer */}
+      <div className="flex-1 min-w-0" />
+
+      {/* Actions */}
+      <div className="flex items-center gap-2 lg:gap-4 shrink-0">
+        <span className="text-sm text-neutral-600 hidden md:inline truncate max-w-[200px]">
+          {email}
+        </span>
+        <button
+          onClick={handleLogout}
+          className="flex items-center gap-1.5 text-sm text-neutral-700 hover:text-neutral-900 transition p-2 rounded-lg hover:bg-neutral-100"
+          aria-label="Sign out"
+        >
+          <LogOut className="w-4 h-4" />
+          <span className="hidden sm:inline">Sign out</span>
+        </button>
+      </div>
     </header>
   );
 }

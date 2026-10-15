@@ -15,19 +15,26 @@ const nav = [
   { href: '/audit-logs', label: 'Audit Logs', icon: ScrollText },
 ];
 
-export function Sidebar() {
+interface Props {
+  className?: string;
+  onNavigate?: () => void;
+}
+
+export function Sidebar({ className = '', onNavigate }: Props) {
   const pathname = usePathname();
 
   return (
-    <aside className="w-64 bg-neutral-900 text-neutral-300 flex flex-col">
+    <aside
+      className={`w-64 bg-neutral-900 text-neutral-300 flex-col ${className}`}
+    >
       {/* Brand */}
-      <div className="h-16 flex items-center gap-2 px-6 border-b border-neutral-800">
+      <div className="h-16 flex items-center gap-2 px-6 border-b border-neutral-800 shrink-0">
         <Shield className="w-5 h-5 text-white" />
         <span className="font-semibold text-white">Platform Admin</span>
       </div>
 
       {/* Nav */}
-      <nav className="flex-1 p-3 space-y-1">
+      <nav className="flex-1 p-3 space-y-1 overflow-y-auto">
         {nav.map(({ href, label, icon: Icon }) => {
           const active =
             pathname === href || pathname.startsWith(href + '/');
@@ -36,6 +43,7 @@ export function Sidebar() {
             <Link
               key={href}
               href={href}
+              onClick={onNavigate}
               className={`flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition ${
                 active
                   ? 'bg-neutral-800 text-white'
@@ -50,7 +58,7 @@ export function Sidebar() {
       </nav>
 
       {/* Footer */}
-      <div className="p-3 border-t border-neutral-800">
+      <div className="p-3 border-t border-neutral-800 shrink-0">
         <p className="text-xs text-neutral-500 px-3">
           v0.1.0 — Dev
         </p>

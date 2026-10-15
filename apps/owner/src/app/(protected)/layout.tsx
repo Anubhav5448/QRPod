@@ -13,6 +13,7 @@ export default function ProtectedLayout({
 }) {
   const router = useRouter();
   const [checking, setChecking] = useState(true);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   useEffect(() => {
     let cancelled = false;
@@ -31,6 +32,16 @@ export default function ProtectedLayout({
     };
   }, [router]);
 
+  // Close mobile menu on route change / Esc key
+  useEffect(() => {
+    if (!mobileMenuOpen) return;
+    const handleEsc = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setMobileMenuOpen(false);
+    };
+    window.addEventListener('keydown', handleEsc);
+    return () => window.removeEventListener('keydown', handleEsc);
+  }, [mobileMenuOpen]);
+
   if (checking) {
     return (
       <div className="h-screen flex items-center justify-center bg-neutral-50">
@@ -41,9 +52,28 @@ export default function ProtectedLayout({
 
   return (
     <div className="h-screen flex overflow-hidden bg-neutral-50">
-      <OwnerSidebar />
+      {/* Desktop sidebar — always visible on lg+ */}
+      <OwnerSidebar className="hidden lg:flex" />
+
+      {/* Mobile drawer */}
+      {mobileMenuOpen && (
+        <>
+          {/* Overlay */}
+          <div
+            className="fixed inset-0 z-40 bg-black/50 lg:hidden"
+            onClick={() => setMobileMenuOpen(false)}
+            aria-hidden="true"
+          />
+          {/* Drawer */}
+          <OwnerSidebar
+            className="fixed inset-y-0 left-0 z-50 flex lg:hidden animate-in slide-in-from-left duration-200"
+            onNavigate={() => setMobileMenuOpen(false)}
+          />
+        </>
+      )}
+
       <div className="flex-1 flex flex-col min-w-0">
-        <OwnerTopBar />
+        <OwnerTopBar onMenuClick={() => setMobileMenuOpen(true)} />
         <main className="flex-1 overflow-hidden">{children}</main>
       </div>
     </div>

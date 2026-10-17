@@ -93,162 +93,162 @@ export default function NewRestaurantPage() {
   };
 
   return (
-    <div className="p-8 max-w-3xl">
-      <Link
-        href="/restaurants"
-        className="inline-flex items-center gap-1.5 text-sm text-neutral-600 hover:text-neutral-900 mb-6"
-      >
-        <ArrowLeft className="w-4 h-4" />
-        Back to Restaurants
-      </Link>
+    <div className="h-full overflow-y-auto">
+      <div className="max-w-3xl mx-auto p-4 sm:p-6 lg:p-8">
+        <Link
+          href="/restaurants"
+          className="inline-flex items-center gap-1.5 text-sm text-neutral-600 hover:text-neutral-900 mb-4 sm:mb-6 py-1"
+        >
+          <ArrowLeft className="w-4 h-4" />
+          Back to Restaurants
+        </Link>
 
-      <div className="mb-8">
-        <h1 className="text-2xl font-semibold text-neutral-900">
-          New Restaurant
-        </h1>
-        <p className="text-sm text-neutral-500 mt-1">
-          Create a restaurant and its owner account
-        </p>
-      </div>
+        <div className="mb-6 sm:mb-8">
+          <h1 className="text-xl sm:text-2xl font-semibold text-neutral-900">
+            New Restaurant
+          </h1>
+          <p className="text-sm text-neutral-500 mt-1">
+            Create a restaurant and its owner account
+          </p>
+        </div>
 
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
-        {/* Restaurant details */}
-        <section className="bg-white rounded-xl border border-neutral-200 p-6">
-          <h2 className="text-sm font-medium text-neutral-900 mb-4 uppercase tracking-wider">
-            Restaurant Details
-          </h2>
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 sm:space-y-6">
+          {/* Restaurant details */}
+          <section className="bg-white rounded-xl border border-neutral-200 p-4 sm:p-6">
+            <h2 className="text-sm font-medium text-neutral-900 mb-4 uppercase tracking-wider">
+              Restaurant Details
+            </h2>
 
-          <div className="space-y-4">
-            <Field label="Restaurant Name" error={errors.name?.message}>
-              <input
-                type="text"
-                {...register('name')}
-                onChange={handleNameChange}
-                placeholder="The Garden Kitchen"
-                className={inputClass}
-                disabled={submitting}
-              />
-            </Field>
-
-            <Field
-              label="Slug"
-              error={errors.slug?.message}
-              hint="URL-friendly identifier — lowercase, hyphens only"
-            >
-              <input
-                type="text"
-                {...register('slug')}
-                placeholder="the-garden-kitchen"
-                className={inputClass}
-                disabled={submitting}
-              />
-            </Field>
-
-            <div className="grid grid-cols-2 gap-4">
-              <Field label="Phone" error={errors.phone?.message}>
+            <div className="space-y-4">
+              <Field label="Restaurant Name" error={errors.name?.message}>
                 <input
                   type="text"
+                  {...register('name')}
+                  onChange={handleNameChange}
+                  placeholder="The Garden Kitchen"
+                  className={inputClass}
+                  disabled={submitting}
+                />
+              </Field>
+
+              <Field
+                label="Slug"
+                error={errors.slug?.message}
+                hint="URL-friendly identifier — lowercase, hyphens only"
+              >
+                <input
+                  type="text"
+                  {...register('slug')}
+                  placeholder="the-garden-kitchen"
+                  className={inputClass}
+                  disabled={submitting}
+                />
+              </Field>
+
+              <Field label="Phone" error={errors.phone?.message}>
+                <input
+                  type="tel"
                   {...register('phone')}
                   placeholder="+919000000001"
                   className={inputClass}
                   disabled={submitting}
                 />
               </Field>
+
+              <Field label="Address" error={errors.address?.message}>
+                <textarea
+                  {...register('address')}
+                  placeholder="12 MG Road, Dehradun"
+                  rows={2}
+                  className={inputClass}
+                  disabled={submitting}
+                />
+              </Field>
             </div>
+          </section>
 
-            <Field label="Address" error={errors.address?.message}>
-              <textarea
-                {...register('address')}
-                placeholder="12 MG Road, Dehradun"
-                rows={2}
-                className={inputClass}
-                disabled={submitting}
-              />
-            </Field>
-          </div>
-        </section>
+          {/* Owner details */}
+          <section className="bg-white rounded-xl border border-neutral-200 p-4 sm:p-6">
+            <h2 className="text-sm font-medium text-neutral-900 mb-4 uppercase tracking-wider">
+              Owner Account
+            </h2>
 
-        {/* Owner details */}
-        <section className="bg-white rounded-xl border border-neutral-200 p-6">
-          <h2 className="text-sm font-medium text-neutral-900 mb-4 uppercase tracking-wider">
-            Owner Account
-          </h2>
+            <div className="space-y-4">
+              <Field
+                label="Owner Name"
+                error={errors.ownerName?.message}
+              >
+                <input
+                  type="text"
+                  {...register('ownerName')}
+                  placeholder="John Doe"
+                  className={inputClass}
+                  disabled={submitting}
+                />
+              </Field>
 
-          <div className="space-y-4">
-            <Field
-              label="Owner Name"
-              error={errors.ownerName?.message}
+              <Field
+                label="Owner Email"
+                error={errors.ownerEmail?.message}
+              >
+                <input
+                  type="email"
+                  {...register('ownerEmail')}
+                  placeholder="owner@example.com"
+                  className={inputClass}
+                  disabled={submitting}
+                />
+              </Field>
+
+              <Field
+                label="Owner Password"
+                error={errors.ownerPassword?.message}
+                hint="Minimum 12 characters — share with the owner securely"
+              >
+                <PasswordInput
+                  {...register('ownerPassword')}
+                  value={ownerPasswordValue}
+                  showStrength
+                  placeholder="••••••••••••"
+                  className={inputClass}
+                  disabled={submitting}
+                  autoComplete="new-password"
+                />
+              </Field>
+            </div>
+          </section>
+
+          {serverError && (
+            <div className="flex items-start gap-2 p-3 rounded-lg bg-red-50 border border-red-100">
+              <AlertCircle className="w-4 h-4 text-red-600 mt-0.5 shrink-0" />
+              <p className="text-sm text-red-700">{serverError}</p>
+            </div>
+          )}
+
+          <div className="flex flex-col-reverse sm:flex-row sm:justify-end gap-3">
+            <Link
+              href="/restaurants"
+              className="px-4 py-2.5 sm:py-2 rounded-lg border border-neutral-200 text-sm text-neutral-700 hover:bg-neutral-50 transition text-center"
             >
-              <input
-                type="text"
-                {...register('ownerName')}
-                placeholder="John Doe"
-                className={inputClass}
-                disabled={submitting}
-              />
-            </Field>
-
-            <Field
-              label="Owner Email"
-              error={errors.ownerEmail?.message}
+              Cancel
+            </Link>
+            <button
+              type="submit"
+              disabled={submitting}
+              className="px-4 py-2.5 sm:py-2 rounded-lg bg-neutral-900 text-white text-sm font-medium hover:bg-neutral-800 disabled:opacity-60 disabled:cursor-not-allowed transition flex items-center justify-center gap-2"
             >
-              <input
-                type="email"
-                {...register('ownerEmail')}
-                placeholder="owner@example.com"
-                className={inputClass}
-                disabled={submitting}
-              />
-            </Field>
-
-            <Field
-              label="Owner Password"
-              error={errors.ownerPassword?.message}
-              hint="Minimum 12 characters — share with the owner securely"
-            >
-              <PasswordInput
-                {...register('ownerPassword')}
-                value={ownerPasswordValue}
-                showStrength
-                placeholder="••••••••••••"
-                className={inputClass}
-                disabled={submitting}
-                autoComplete="new-password"
-              />
-            </Field>
+              {submitting ? (
+                <>
+                  <Loader2 className="w-4 h-4 animate-spin" />
+                  Creating…
+                </>
+              ) : (
+                'Create Restaurant'
+              )}
+            </button>
           </div>
-        </section>
-
-        {serverError && (
-          <div className="flex items-start gap-2 p-3 rounded-lg bg-red-50 border border-red-100">
-            <AlertCircle className="w-4 h-4 text-red-600 mt-0.5 shrink-0" />
-            <p className="text-sm text-red-700">{serverError}</p>
-          </div>
-        )}
-
-        <div className="flex justify-end gap-3">
-          <Link
-            href="/restaurants"
-            className="px-4 py-2 rounded-lg border border-neutral-200 text-sm text-neutral-700 hover:bg-neutral-50 transition"
-          >
-            Cancel
-          </Link>
-          <button
-            type="submit"
-            disabled={submitting}
-            className="px-4 py-2 rounded-lg bg-neutral-900 text-white text-sm font-medium hover:bg-neutral-800 disabled:opacity-60 disabled:cursor-not-allowed transition flex items-center gap-2"
-          >
-            {submitting ? (
-              <>
-                <Loader2 className="w-4 h-4 animate-spin" />
-                Creating…
-              </>
-            ) : (
-              'Create Restaurant'
-            )}
-          </button>
-        </div>
-      </form>
+        </form>
+      </div>
     </div>
   );
 }
